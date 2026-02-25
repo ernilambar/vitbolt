@@ -338,6 +338,37 @@ class ViteHelperTest extends TestCase {
 	/**
 	 * @test
 	 */
+	public function enqueue_entry_production_static_uses_static_key_when_provided() {
+		$GLOBALS['wp_remote_get_response'] = array( 'response' => array( 'code' => 404 ) );
+
+		$build_dir = $this->fixtures_path . 'build';
+		if ( ! is_dir( $build_dir ) ) {
+			mkdir( $build_dir, 0755, true );
+		}
+
+		$vite = new ViteHelper(
+			'my-plugin',
+			$this->fixtures_url,
+			$this->fixtures_path,
+			array(
+				'output_pattern' => 'static',
+				'build_dir'      => 'build',
+			)
+		);
+		// Dev uses 'src/admin.js'; prod uses static_key 'admin' → build/assets/admin.js.
+		$vite->register_entry( 'my-admin', 'src/admin.js', array(), true, 'admin' );
+		$vite->enqueue_entry( 'my-admin' );
+
+		$this->assertNotEmpty( $GLOBALS['wp_enqueue_script_calls'] );
+		$this->assertSame( 'my-admin', $GLOBALS['wp_enqueue_script_calls'][0]['handle'] );
+		$this->assertStringContainsString( 'build/assets/admin.js', $GLOBALS['wp_enqueue_script_calls'][0]['src'] );
+		$this->assertNotEmpty( $GLOBALS['wp_enqueue_style_calls'] );
+		$this->assertStringContainsString( 'build/assets/admin.css', $GLOBALS['wp_enqueue_style_calls'][0]['src'] );
+	}
+
+	/**
+	 * @test
+	 */
 	public function enqueue_entry_production_manifest_enqueues_script_and_styles_from_manifest() {
 		$GLOBALS['wp_remote_get_response'] = array( 'response' => array( 'code' => 404 ) );
 

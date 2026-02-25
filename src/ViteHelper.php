@@ -277,17 +277,19 @@ if ( ! class_exists( \Nilambar\Vitbolt\ViteHelper::class ) ) {
 		 * Register an entry point.
 		 *
 		 * @since 1.0.0
-		 * @param string   $handle    Script/style handle.
-		 * @param string   $entry     Vite entry (e.g. 'src/admin.js').
-		 * @param string[] $deps      Dependencies.
-		 * @param bool     $in_footer Enqueue script in footer.
+		 * @param string   $handle     Script/style handle.
+		 * @param string   $entry      Vite entry path for dev (e.g. 'src/admin.js').
+		 * @param string[] $deps       Dependencies.
+		 * @param bool     $in_footer  Enqueue script in footer.
+		 * @param string   $static_key Optional. For static output only: key for prod URL (e.g. 'admin' → build/assets/admin.js). Omit for manifest or when entry path is used as key.
 		 * @return self
 		 */
-		public function register_entry( $handle, $entry, $deps = array(), $in_footer = true ) {
+		public function register_entry( $handle, $entry, $deps = array(), $in_footer = true, $static_key = null ) {
 			$this->registered_entries[ $handle ] = array(
-				'entry'     => $entry,
-				'deps'      => $deps,
-				'in_footer' => $in_footer,
+				'entry'      => $entry,
+				'deps'       => $deps,
+				'in_footer'  => $in_footer,
+				'static_key' => $static_key,
 			);
 			return $this;
 		}
@@ -394,7 +396,11 @@ if ( ! class_exists( \Nilambar\Vitbolt\ViteHelper::class ) ) {
 			if ( 'manifest' === $this->output_pattern ) {
 				return $this->enqueue_prod_manifest( $entry, $handle, $deps, $in_footer );
 			}
-			return $this->enqueue_prod_static( $entry, $handle, $deps, $in_footer );
+			// Static mode: use short key for prod URL when provided (dev still uses $entry path).
+			$url_key = isset( $this->registered_entries[ $handle ]['static_key'] ) && '' !== $this->registered_entries[ $handle ]['static_key']
+				? $this->registered_entries[ $handle ]['static_key']
+				: $entry;
+			return $this->enqueue_prod_static( $url_key, $handle, $deps, $in_footer );
 		}
 
 		/**
