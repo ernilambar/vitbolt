@@ -33,6 +33,7 @@ npm-debug.log
 *.diff
 *.err
 *.log
+*.[Cc]ache
 *.map
 *.orig
 *.pyc
@@ -50,3 +51,4 @@ npm-debug.log
 /deploy/
 /node_modules/
 /vendor/
+/tests/fixtures/build/
