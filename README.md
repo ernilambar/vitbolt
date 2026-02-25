@@ -37,7 +37,37 @@ add_action( 'admin_enqueue_scripts', fn() => $vite->enqueue_entry( 'my-plugin-ad
 ```
 
 - **manifest**: Production assets are read from `build/manifest.json` (Vite default).
-- **static**: Production assets are loaded from `build/assets/{entry}.js` and `build/assets/{entry}.css`.
+- **static**: Production assets are loaded from `build/assets/{key}.js` and `build/assets/{key}.css`. Pass an optional 5th argument (static key) so dev uses the entry path (e.g. `src/admin.js`) and prod uses the short key (e.g. `admin`):
+
+```php
+// Static mode with short keys (matches common Vite input keys).
+$vite->register_entry( 'my-plugin-admin', 'src/admin.js', [], true, 'admin' );
+$vite->register_entry( 'my-plugin-front', 'src/front.js', [], true, 'front' );
+```
+
+Vite config for static with short keys:
+
+```js
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+
+export default defineConfig({
+  build: {
+    outDir: 'build',
+    rollupOptions: {
+      input: {
+        admin: resolve(__dirname, 'src/admin.js'),
+        front: resolve(__dirname, 'src/front.js'),
+      },
+      output: {
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]',
+      },
+    },
+  },
+});
+```
 
 ## Scripts
 
