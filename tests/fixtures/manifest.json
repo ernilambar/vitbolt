@@ -1,0 +1,10 @@
+{
+	"src/admin.js": {
+		"file": "assets/admin-abc123.js",
+		"css": ["assets/admin-def456.css"]
+	},
+	"src/front.js": {
+		"file": "assets/front-xyz789.js",
+		"css": ["assets/front-a.css", "assets/front-b.css"]
+	}
+}

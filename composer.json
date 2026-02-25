@@ -1,0 +1,32 @@
+{
+	"name": "ernilambar/vitbolt",
+	"description": "Vite integration for WordPress plugins",
+	"license": "MIT",
+	"type": "library",
+	"require": {
+		"php": ">=7.4"
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^1",
+		"phpunit/phpunit": "^9.0 || ^10.0",
+		"wp-coding-standards/wpcs": "^3.3"
+	},
+	"autoload": {
+		"psr-4": {
+			"Nilambar\\Vitbolt\\": "src/"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"platform": {
+			"php": "7.4"
+		}
+	},
+	"scripts": {
+		"format": "@php ./vendor/bin/phpcbf --report-full --report-summary .",
+		"lint": "@php ./vendor/bin/phpcs --report-full --report-summary .",
+		"test": "phpunit"
+	}
+}
