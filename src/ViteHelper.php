@@ -99,14 +99,6 @@ if ( ! class_exists( \Nilambar\Vitbolt\ViteHelper::class ) ) {
 		private $output_pattern;
 
 		/**
-		 * Static filename mapping (e.g. ['admin.js' => 'admin.js']).
-		 *
-		 * @since 1.0.0
-		 * @var array
-		 */
-		private $static_files = array();
-
-		/**
 		 * Timeout for dev server check (seconds).
 		 *
 		 * @since 1.0.0
@@ -134,7 +126,6 @@ if ( ! class_exists( \Nilambar\Vitbolt\ViteHelper::class ) ) {
 				'manifest_file'        => 'manifest.json',
 				'check_server_timeout' => 0.5,
 				'output_pattern'       => 'manifest',
-				'static_files'         => array(),
 			);
 
 			$options = wp_parse_args( $options, $defaults );
@@ -144,7 +135,6 @@ if ( ! class_exists( \Nilambar\Vitbolt\ViteHelper::class ) ) {
 			$this->manifest_path        = $this->plugin_path . $this->build_dir . '/' . ltrim( $options['manifest_file'], '/' );
 			$this->check_server_timeout = $options['check_server_timeout'];
 			$this->output_pattern       = $options['output_pattern'];
-			$this->static_files         = $options['static_files'];
 		}
 
 		/**
@@ -245,20 +235,14 @@ if ( ! class_exists( \Nilambar\Vitbolt\ViteHelper::class ) ) {
 		}
 
 		/**
-		 * Get asset URL from static mapping.
+		 * Get asset URL for static output (build/assets/{entry}.js or .css).
 		 *
 		 * @since 1.0.0
 		 * @param string $entry Entry key.
 		 * @param string $type  'js' or 'css'.
-		 * @return string|false
+		 * @return string
 		 */
 		private function get_asset_url_static( $entry, $type = 'js' ) {
-			$file_key = $entry . '.' . $type;
-
-			if ( isset( $this->static_files[ $file_key ] ) ) {
-				return $this->plugin_url . $this->build_dir . '/' . $this->static_files[ $file_key ];
-			}
-
 			return $this->plugin_url . $this->build_dir . '/assets/' . $entry . '.' . $type;
 		}
 

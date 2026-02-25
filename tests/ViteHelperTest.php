@@ -141,7 +141,7 @@ class ViteHelperTest extends TestCase {
 	/**
 	 * @test
 	 */
-	public function get_asset_url_static_returns_default_js_url_when_no_static_files() {
+	public function get_asset_url_static_returns_js_url() {
 		$vite = new ViteHelper(
 			'my-plugin',
 			$this->fixtures_url,
@@ -160,7 +160,7 @@ class ViteHelperTest extends TestCase {
 	/**
 	 * @test
 	 */
-	public function get_asset_url_static_returns_default_css_url_when_no_static_files() {
+	public function get_asset_url_static_returns_css_url() {
 		$vite = new ViteHelper(
 			'my-plugin',
 			$this->fixtures_url,
@@ -174,28 +174,6 @@ class ViteHelperTest extends TestCase {
 		$url = $vite->get_asset_url( 'admin', 'css' );
 
 		$this->assertSame( $this->fixtures_url . 'build/assets/admin.css', $url );
-	}
-
-	/**
-	 * @test
-	 */
-	public function get_asset_url_static_uses_static_files_mapping_when_provided() {
-		$vite = new ViteHelper(
-			'my-plugin',
-			$this->fixtures_url,
-			$this->fixtures_path,
-			array(
-				'output_pattern' => 'static',
-				'build_dir'      => 'build',
-				'static_files'   => array(
-					'admin.js'  => 'admin-hashed.js',
-					'admin.css' => 'admin-hashed.css',
-				),
-			)
-		);
-
-		$this->assertSame( $this->fixtures_url . 'build/admin-hashed.js', $vite->get_asset_url( 'admin', 'js' ) );
-		$this->assertSame( $this->fixtures_url . 'build/admin-hashed.css', $vite->get_asset_url( 'admin', 'css' ) );
 	}
 
 	// -------------------------------------------------------------------------
