@@ -1,0 +1,11 @@
+* text=auto eol=lf
+
+/.github export-ignore
+/.gitignore export-ignore
+/.editorconfig export-ignore
+/.cursor export-ignore
+/LICENSE export-ignore
+/phpunit.xml.dist export-ignore
+/phpcs.xml.dist export-ignore
+/tests export-ignore
+/composer.lock export-ignore
