@@ -29,7 +29,6 @@ $vite = new ViteHelper(
 		'dev_server_url' => 'http://localhost:5173',
 		'build_dir'      => 'build',
 		'output_pattern' => 'manifest', // or 'static'
-		'static_files'   => [],         // for static: e.g. ['admin.js' => 'admin.js']
 	]
 );
 
@@ -38,7 +37,7 @@ add_action( 'admin_enqueue_scripts', fn() => $vite->enqueue_entry( 'my-plugin-ad
 ```
 
 - **manifest**: Production assets are read from `build/manifest.json` (Vite default).
-- **static**: Use `static_files` to map entry keys to built filenames, or rely on `build/assets/{entry}.js` / `build/assets/{entry}.css`.
+- **static**: Production assets are loaded from `build/assets/{entry}.js` and `build/assets/{entry}.css`.
 
 ## Scripts
 
